@@ -1,12 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './reset.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+function Header() {
+  return (
+    <header>
+      <div className="container">
+        <h1 className="title">サカモトツイートジェネレータオンライン</h1>
+      </div>
+    </header>
+  )
+}
+
+function Footer() {
+  return (
+    <footer>
+      <div className="container">
+        <p className="copyright">© ΙΔΈΑ</p>
+      </div>
+    </footer>
+  )
+}
+
 ReactDOM.render(
   <React.StrictMode>
+    <Header />
     <App />
+    <Footer />
   </React.StrictMode>,
   document.getElementById('root')
 );

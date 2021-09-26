@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,81 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+main > .container {
+  max-width: 1024px;
+  padding: 50px;
+  margin: 0 auto;
+}
+
+.generator,
+.links {
+  margin-top: 50px;
+}
+
+h3 {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.paragraph {
+  margin-top: 10px;
+}
+
+.paragraph::before {
+  content: "　";
+}
+
+.word-button {
+  background-color: #5dc1f0;
+  color: white;
+  font-size: large;
+
+  display: block;
+
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 0 auto;
+
+  cursor: pointer;
+}
+
+.word-button:active {
+  background-color: #008ad0;
+}
+
+.word-list {
+  margin-top: 20px;
+}
+
+.word-item {
+  background-color: rgba(93, 193, 240, 0.1);
+
+  display: inline-block;
+
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.eos {
+  background-color: rgba(248, 178, 0, 0.1);
+}
+
+.link-item {
+  margin-top: 10px;
+}
+
+.link-item::before {
+  content: "•";
+  color: #f8b200;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.link-link {
+  color: #008ad0;
+  cursor: pointer;
 }
