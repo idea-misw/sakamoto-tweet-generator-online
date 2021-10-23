@@ -19,7 +19,7 @@ function Footer() {
   return (
     <footer>
       <div className="container">
-        <p className="copyright">© ΙΔΈΑ</p>
+        <p className="copyright">© 2021 ΙΔΈΑ</p>
       </div>
     </footer>
   )
