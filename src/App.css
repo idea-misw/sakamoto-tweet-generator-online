@@ -85,7 +85,7 @@ input[type=radio]:checked + label {
 
 .buttons {
   text-align: center;
-  margin-top: 50px;
+  margin: 50px 0;
 }
 
 .button {
@@ -111,7 +111,7 @@ input[type=radio]:checked + label {
 }
 
 .word-list {
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 .word-item {
@@ -126,6 +126,11 @@ input[type=radio]:checked + label {
 
 .word-item--eos-token {
   background-color: rgba(248, 178, 0, 0.1);
+}
+
+.chart {
+  max-width: 425px;
+  margin: 0 auto;
 }
 
 .link-item {

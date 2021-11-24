@@ -1,4 +1,5 @@
 import React from 'react';
+import { Bar } from 'react-chartjs-2';
 // import logo from './logo.svg';
 import './App.css';
 
@@ -58,10 +59,40 @@ function getWeights(vocabIndex, vocab, graph) {
   return weights;
 }
 
+function getData(vocab, weights) {
+  var sumWeights = weights.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    0
+  );
+  
+  var wordsAndWeights = [];
+  for (var i = 0; i < vocab.length; i++) {
+    wordsAndWeights.push([vocab[i], weights[i]]);
+  }
+  
+  wordsAndWeights.sort((a, b) => b[1] - a[1]);
+  
+  var sortedWords = []
+  var sortedWeights = []
+  for (var i = 0; i < Math.min(5, vocab.length); i++) {
+      sortedWords.push(wordsAndWeights[i][0][1]);
+      sortedWeights.push(wordsAndWeights[i][1] / sumWeights);
+  }
+  
+  return {
+    labels: sortedWords,
+    datasets: [{
+      label: '確率',
+      data: sortedWeights,
+      backgroundColor: 'rgb(255, 99, 132)'
+    }]
+  }
+}
+
 function Description(props) {
   return (
     <div className="description">
-      <h3>サカモトさんのツイートをジェネレート！</h3>
+      <h3>サカモトのツイートをジェネレート！</h3>
       <div className="paragraphs">
         <p className="paragraph">
           あのサカモトツイートジェネレータがついにオンラインで登場します。
@@ -151,6 +182,9 @@ function Generator(props) {
         </button>
       </div>
       <WordList words={props.words} />
+      <div className="chart">
+        <Bar data={props.data} height={200} />
+      </div>
     </div>
   );
 }
@@ -222,7 +256,8 @@ class App extends React.Component {
       graph: [],
       vocabIndex: 0,
       weights: [],
-      words: []
+      words: [],
+      data: getData([], [])
     };
   }
 
@@ -237,7 +272,8 @@ class App extends React.Component {
       graph: graph,
       vocabIndex: 0,
       weights: weights,
-      words: []
+      words: [],
+      data: getData(vocab, weights)
     });
   }
 
@@ -260,7 +296,8 @@ class App extends React.Component {
       graph: this.state.graph,
       vocabIndex: vocabIndex,
       weights: weights,
-      words: this.state.words.concat(word)
+      words: this.state.words.concat(word),
+      data: getData(this.state.vocab, weights)
     });
   }
 
@@ -268,13 +305,15 @@ class App extends React.Component {
     if (this.state.article === '') {
       return;
     }
+    var weights = getWeights(0, this.state.vocab, this.state.graph)
     this.setState({
       article: this.state.article,
       vocab: this.state.vocab,
       graph: this.state.graph,
       vocabIndex: 0,
-      weights: getWeights(0, this.state.vocab, this.state.graph),
-      words: []
+      weights: weights,
+      words: [],
+      data: getData(this.state.vocab, weights)
     });
   }
 
@@ -286,6 +325,7 @@ class App extends React.Component {
           <Generator
             article={this.state.article}
             words={this.state.words}
+            data={this.state.data}
             onChange={(event) => this.handleChange(event)}
             onClickSample={() => this.handleSample()}
             onClickReset={() => this.handleReset()}
