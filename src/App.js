@@ -86,28 +86,44 @@ function getData(vocab, weights) {
       data: sortedWeights,
       backgroundColor: 'rgb(255, 99, 132)'
     }]
-  }
+  };
 }
 
 function Description(props) {
   return (
-    <div className="description">
+    <section className="description">
       <h3>サカモトのツイートをジェネレート！</h3>
-      <div className="paragraphs">
-        <p className="paragraph">
-          あのサカモトツイートジェネレータがついにオンラインで登場します。
-        </p>
-        <p className="paragraph">
-          せっかくのジェネレータを手軽に試してみたい、という声が寄せられたり寄せられなかったりしました。
-          そこで今回はツイートに代わって記事を学習。
-          例によってサカモトっぽい文を生成してくれます。
-        </p>
-        <p className="paragraph">
-          これであなたもサカモトに・・・。
-        </p>
-      </div>
-    </div>
-  )
+      <p>
+        あのサカモトツイートジェネレータがついにオンラインで登場します。
+      </p>
+      <p>
+        せっかくのジェネレータを手軽に試してみたい、という声が寄せられたり寄せられなかったりしました。
+        そこで今回はツイートに代わって記事を学習。
+        例によってサカモトっぽい文を生成してくれます。
+      </p>
+      <p>
+        これであなたもサカモトに・・・。
+      </p>
+    </section>
+  );
+}
+
+function Usage(prop) {
+  return (
+    <section className="usage">
+      <h3>使い方</h3>
+      <p>
+        「学習記事選択」で学習したい記事を選択します。
+        記事については半角を全角に正規化し、形態素解析を行っています。
+      </p>
+      <p>
+        「サンプル」で次に来る単語をサンプリングします。
+        単語はtrigram言語モデルの分布からサンプリングされます。
+        なお単語の分布は棒グラフによって与えられます。
+        「リセット」で再び初めからサンプリングすることができます。
+      </p>
+    </section>
+  );
 }
 
 function RadioLabel(prop) {
@@ -119,7 +135,7 @@ function RadioLabel(prop) {
         {article.label}
       </label>
     </div>
-  )
+  );
 }
 
 function RadioForm(prop) {
@@ -132,13 +148,15 @@ function RadioForm(prop) {
       value: 'advent20',
       label: 'アドカレ2020',
     }
-  ]
+  ];
   const radioLabels = articles.map((article, index) =>
     <RadioLabel key={index} article={article} onChange={prop.onChange} />
   );
   return (
     <form className="radio-form">
-      学習記事選択:
+      <span>
+        学習記事選択:
+      </span>
       {radioLabels}
     </form>
   );
@@ -171,7 +189,7 @@ function Generator(props) {
   const sampleClassName = "button" + (article === '' || props.words[props.words.length - 1] === 'EOS' ? "" : " button--active");
   const resetClassName = "button" + (article === '' ? "" : " button--active");
   return (
-    <div className="generator">
+    <section className="generator">
       <RadioForm onChange={props.onChange} />
       <div className="buttons">
         <button className={sampleClassName} onClick={props.onClickSample}>
@@ -185,7 +203,7 @@ function Generator(props) {
       <div className="chart">
         <Bar data={props.data} height={200} />
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -219,18 +237,6 @@ function Links(props) {
       title: '【再掲】サカモトツイートジェネレータ - 洞窟の比喩',
     },
     {
-      url: 'https://github.com/ku-nlp/python-textformatting',
-      title: 'ku-nlp/python-textformatting'
-    },
-    {
-      url: 'https://pypi.org/project/zenhan/',
-      title: 'zenhan · PyPI'
-    },
-    {
-      url: 'https://nlp.ist.i.kyoto-u.ac.jp/?JUMAN%2B%2B',
-      title: 'JUMAN++ - KUROHASHI-CHU-MURAWAKI LAB'
-    },
-    {
       url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Hke7xT6Tr',
       title: '【提案】自分の側に『推し』がいたら人類は最強になるんじゃないの？ - HackMD'
     },
@@ -240,10 +246,10 @@ function Links(props) {
     }
   ];
   return (
-    <div className="links">
+    <section className="links">
       <h3>関連リンク</h3>
       <LinkList links={links} />
-    </div>
+    </section>
   );
 }
 
@@ -322,6 +328,7 @@ class App extends React.Component {
       <main>
         <div className="container">
           <Description />
+          <Usage />
           <Generator
             article={this.state.article}
             words={this.state.words}

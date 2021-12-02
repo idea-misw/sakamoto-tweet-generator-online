@@ -43,6 +43,13 @@ main > .container {
   margin: 0 auto;
 }
 
+@media screen and (max-width: 320px) {
+  main > .container {
+    padding: 50px 20px;
+  }
+}
+
+.usage,
 .generator,
 .links {
   margin-top: 50px;
@@ -54,11 +61,11 @@ h3 {
   margin-bottom: 20px;
 }
 
-.paragraph {
+p {
   margin-top: 10px;
 }
 
-.paragraph::before {
+p::before {
   content: "　";
 }
 
