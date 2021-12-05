@@ -24,18 +24,26 @@ import './App.css';
 //   );
 // }
 
-import vocab_advent19 from './Hke7xT6Tr.vocab.json';
-import graph_advent19 from './Hke7xT6Tr.graph.json';
-import vocab_advent20 from './ryqcvcfjD.vocab.json';
-import graph_advent20 from './ryqcvcfjD.graph.json';
+import vocabForAdvent19 from './Hke7xT6Tr.vocab.json';
+import graphForAdvent19 from './Hke7xT6Tr.graph.json';
+import vocabForAdvent20 from './ryqcvcfjD.vocab.json';
+import graphForAdvent20 from './ryqcvcfjD.graph.json';
+import vocabForSakaCale from './S1w1XBy0S.vocab.json';
+import graphForSakaCale from './S1w1XBy0S.graph.json';
+import vocabForMiniMini from './Syq2j9ClO.vocab.json';
+import graphForMiniMini from './Syq2j9ClO.graph.json';
 
 const vocabs = {
-  'advent19': vocab_advent19,
-  'advent20': vocab_advent20
+  'advent19': vocabForAdvent19,
+  'advent20': vocabForAdvent20,
+  'sakacale': vocabForSakaCale,
+  'minimini': vocabForMiniMini
 };
 const graphs = {
-  'advent19': graph_advent19,
-  'advent20': graph_advent20
+  'advent19': graphForAdvent19,
+  'advent20': graphForAdvent20,
+  'sakacale': graphForSakaCale,
+  'minimini': graphForMiniMini
 };
 
 function getRandomInt(min, max) {
@@ -84,7 +92,7 @@ function getData(vocab, weights) {
     datasets: [{
       label: '確率',
       data: sortedWeights,
-      backgroundColor: 'rgb(255, 99, 132)'
+      backgroundColor: 'rgb(248, 178, 0)'
     }]
   };
 }
@@ -92,7 +100,7 @@ function getData(vocab, weights) {
 function Description(props) {
   return (
     <section className="description">
-      <h3>サカモトのツイートをジェネレート！</h3>
+      <h3>サカモトの記事をジェネレート！</h3>
       <p>
         あのサカモトツイートジェネレータがついにオンラインで登場します。
       </p>
@@ -119,7 +127,7 @@ function Usage(prop) {
       <p>
         「サンプル」で次に来る単語をサンプリングします。
         単語はtrigram言語モデルの分布からサンプリングされます。
-        なお単語の分布は棒グラフによって与えられます。
+        なお単語の分布（Top-5）は棒グラフによって与えられます。
         「リセット」で再び初めからサンプリングすることができます。
       </p>
     </section>
@@ -147,6 +155,14 @@ function RadioForm(prop) {
     {
       value: 'advent20',
       label: 'アドカレ2020',
+    },
+    {
+      value: 'sakacale',
+      label: 'サカカレ感想',
+    },
+    {
+      value: 'minimini',
+      label: 'ミニミニ大国',
     }
   ];
   const radioLabels = articles.map((article, index) =>
@@ -237,12 +253,24 @@ function Links(props) {
       title: '【再掲】サカモトツイートジェネレータ - 洞窟の比喩',
     },
     {
+      url: 'https://idea-misw.hatenablog.com/entry/2021/12/07/000000',
+      title: '【付録】STGO - 洞窟の比喩',
+    },
+    {
       url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Hke7xT6Tr',
       title: '【提案】自分の側に『推し』がいたら人類は最強になるんじゃないの？ - HackMD'
     },
     {
       url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/ryqcvcfjD',
       title: 'もちもちハム祭り2020 インターネットスペシャル - HackMD'
+    },
+    {
+      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/S1w1XBy0S',
+      title: 'サカカレ、概念 - HackMD'
+    },
+    {
+      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Syq2j9ClO',
+      title: 'ミニミニ大国(仮) - HackMD'
     }
   ];
   return (
