@@ -17,27 +17,3 @@ code {
 body {
   font-family: 'Noto Sans JP', sans-serif;
 }
-
-header,
-footer {
-    background-color: #008ad0;
-    color: white;
-}
-
-header > .container {
-    padding: 20px;
-}
-
-.title {
-    font-size: large;
-    font-weight: bold;
-}
-
-footer > .container {
-    text-align: center;
-    padding: 50px 0;
-}
-
-.copyright {
-    font-size: small;
-}

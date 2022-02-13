@@ -37,6 +37,21 @@
   }
 } */
 
+header,
+footer {
+    background-color: #008ad0;
+    color: white;
+}
+
+header > .container {
+    padding: 20px;
+}
+
+.title {
+    font-size: large;
+    font-weight: bold;
+}
+
 main > .container {
   max-width: 1024px;
   padding: 50px;
@@ -131,7 +146,7 @@ input[type=radio]:checked + label {
   margin: 5px 10px 5px 0;
 }
 
-.word-item--eos-token {
+.word-item--special {
   background-color: rgba(248, 178, 0, 0.1);
 }
 
@@ -152,7 +167,16 @@ input[type=radio]:checked + label {
   margin-right: 10px;
 }
 
-.link-link {
+.link-item > a {
   color: #008ad0;
   cursor: pointer;
+}
+
+footer > .container {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.copyright {
+  font-size: small;
 }

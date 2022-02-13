@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 // import logo from './logo.svg';
 import './App.css';
@@ -24,27 +24,15 @@ import './App.css';
 //   );
 // }
 
-import vocabForAdvent19 from './Hke7xT6Tr.vocab.json';
-import graphForAdvent19 from './Hke7xT6Tr.graph.json';
-import vocabForAdvent20 from './ryqcvcfjD.vocab.json';
-import graphForAdvent20 from './ryqcvcfjD.graph.json';
-import vocabForSakaCale from './S1w1XBy0S.vocab.json';
-import graphForSakaCale from './S1w1XBy0S.graph.json';
-import vocabForMiniMini from './Syq2j9ClO.vocab.json';
-import graphForMiniMini from './Syq2j9ClO.graph.json';
+import vocabForAdv19 from './Hke7xT6Tr.vocab.json';
+import vocabForAdv20 from './ryqcvcfjD.vocab.json';
+import vocabForSkCal from './S1w1XBy0S.vocab.json';
+import vocabForMini from './Syq2j9ClO.vocab.json';
 
-const vocabs = {
-  'advent19': vocabForAdvent19,
-  'advent20': vocabForAdvent20,
-  'sakacale': vocabForSakaCale,
-  'minimini': vocabForMiniMini
-};
-const graphs = {
-  'advent19': graphForAdvent19,
-  'advent20': graphForAdvent20,
-  'sakacale': graphForSakaCale,
-  'minimini': graphForMiniMini
-};
+import graphForAdv19 from './Hke7xT6Tr.graph.json';
+import graphForAdv20 from './ryqcvcfjD.graph.json';
+import graphForSkCal from './S1w1XBy0S.graph.json';
+import graphForMini from './Syq2j9ClO.graph.json';
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -58,115 +46,28 @@ function getRandomIntWeighted(weights) {
   return cumsum.filter(value => value <= randomInt).length;
 }
 
-function getWeights(vocabIndex, vocab, graph) {
-  var weights = Array(vocab.length).fill(0);
-  var nextVocabIndices = graph[vocabIndex];
-  for (var i = 0; i < nextVocabIndices.length; i++) {
-    weights[nextVocabIndices[i][0]] = nextVocabIndices[i][1];
-  }
-  return weights;
-}
-
-function getData(vocab, weights) {
-  var sumWeights = weights.reduce(
-    (previousValue, currentValue) => previousValue + currentValue,
-    0
-  );
-  
-  var wordsAndWeights = [];
-  for (var i = 0; i < vocab.length; i++) {
-    wordsAndWeights.push([vocab[i], weights[i]]);
-  }
-  
-  wordsAndWeights.sort((a, b) => b[1] - a[1]);
-  
-  var sortedWords = []
-  var sortedWeights = []
-  for (var i = 0; i < Math.min(5, vocab.length); i++) {
-      sortedWords.push(wordsAndWeights[i][0][1]);
-      sortedWeights.push(wordsAndWeights[i][1] / sumWeights);
-  }
-  
-  return {
-    labels: sortedWords,
-    datasets: [{
-      label: '確率',
-      data: sortedWeights,
-      backgroundColor: 'rgb(248, 178, 0)'
-    }]
-  };
-}
-
-function Description(props) {
-  return (
-    <section className="description">
-      <h3>サカモトの記事をジェネレート！</h3>
-      <p>
-        あのサカモトツイートジェネレータがついにオンラインで登場します。
-      </p>
-      <p>
-        せっかくのジェネレータを手軽に試してみたい、という声が寄せられたり寄せられなかったりしました。
-        そこで今回はツイートに代わって記事を学習。
-        例によってサカモトっぽい文を生成してくれます。
-      </p>
-      <p>
-        これであなたもサカモトに・・・。
-      </p>
-    </section>
-  );
-}
-
-function Usage(prop) {
-  return (
-    <section className="usage">
-      <h3>使い方</h3>
-      <p>
-        「学習記事選択」で学習したい記事を選択します。
-        記事については半角を全角に正規化し、形態素解析を行っています。
-      </p>
-      <p>
-        「サンプル」で次に来る単語をサンプリングします。
-        単語はtrigram言語モデルの分布からサンプリングされます。
-        なお単語の分布（Top-5）は棒グラフによって与えられます。
-        「リセット」で再び初めからサンプリングすることができます。
-      </p>
-    </section>
-  );
-}
-
-function RadioLabel(prop) {
-  const article = prop.article;
+function RadioLabel(props) {
+  const article = props.article;
   return (
     <div className="radio-label">
-      <input type="radio" id={article.value} name="article" value={article.value} onChange={prop.onChange} />
-      <label htmlFor={article.value}>
+      <input
+        type="radio"
+        id={article.label}
+        name="article"
+        value={article.label}
+        onChange={props.onChange}
+      />
+      <label htmlFor={article.label}>
         {article.label}
       </label>
     </div>
   );
 }
 
-function RadioForm(prop) {
-  const articles = [
-    {
-      value: 'advent19',
-      label: 'アドカレ2019',
-    },
-    {
-      value: 'advent20',
-      label: 'アドカレ2020',
-    },
-    {
-      value: 'sakacale',
-      label: 'サカカレ感想',
-    },
-    {
-      value: 'minimini',
-      label: 'ミニミニ大国',
-    }
-  ];
+function RadioForm(props) {
+  const articles = props.articles;
   const radioLabels = articles.map((article, index) =>
-    <RadioLabel key={index} article={article} onChange={prop.onChange} />
+    <RadioLabel key={index} article={article} onChange={props.onChange} />
   );
   return (
     <form className="radio-form">
@@ -178,9 +79,49 @@ function RadioForm(prop) {
   );
 }
 
+function Button(props) {
+  const label = props.label;
+  const articleLabel = props.articleLabel;
+  const words = props.words;
+
+  const currentWord = words[words.length - 1];
+
+  const className = articleLabel === '' ||
+      (label === 'サンプル' && currentWord === 'EOS') ||
+      (label === 'リセット' && words.length === 0) ?
+      'button' : 'button button--active';
+  return (
+    <button className={className} onClick={props.onClick}>
+      {label}
+    </button>
+  );
+}
+
+function Buttons(props) {
+  const articleLabel = props.articleLabel;
+  const words = props.words;
+  return (
+    <div className="buttons">
+      <Button
+        label="サンプル"
+        articleLabel={articleLabel}
+        words={words}
+        onClick={props.onSampleClick}
+      />
+      <Button
+        label="リセット"
+        articleLabel={articleLabel}
+        words={words}
+        onClick={props.onResetClick}
+      />
+    </div>
+  );
+}
+
 function WordItem(props) {
   const word = props.word;
-  const className = "word-item" + (word === 'EOS' ? " word-item--eos-token" : "");
+  const className = word === 'EOS' ?
+      "word-item word-item--special" : "word-item";
   return (
     <li className={className}>
       {word}
@@ -200,44 +141,129 @@ function WordList(props) {
   );
 }
 
+function Chart(props) {
+  const weights = props.weights;
+  const sumWeights = weights.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    0
+  );
+  
+  const enumWeights = weights.map((weight, index) => [weight, index]);
+  enumWeights.sort((a, b) => b[0] - a[0]);
+
+  const sortedIndices = enumWeights.map(enumWeight => enumWeight[1]);
+
+  const vocab = props.vocab;
+
+  const sortedProbs = sortedIndices.map(
+    sortedIndex => weights[sortedIndex] / sumWeights
+  );
+  const sortedWords = sortedIndices.map(sortedIndex => vocab[sortedIndex][1]);
+
+  const data = {
+    labels: sortedWords.slice(0, 5),
+    datasets: [{
+      label: '確率',
+      data: sortedProbs.slice(0, 5),
+      backgroundColor: 'rgb(248, 178, 0)'
+    }]
+  };
+
+  return (
+    <div className="chart">
+      <Bar data={data} height={200} />
+    </div>
+  );
+}
+
 function Generator(props) {
-  const article = props.article;
-  const sampleClassName = "button" + (article === '' || props.words[props.words.length - 1] === 'EOS' ? "" : " button--active");
-  const resetClassName = "button" + (article === '' ? "" : " button--active");
+  const [articleLabel, setArticleLabel] = useState('');
+  const [vocabIndices, setVocabIndices] = useState([]);
+
+  const articles = props.articles;
+
+  const article = articles.find(({ label }) => label === articleLabel);
+
+  const vocab = article === undefined ? [] : article.vocab;
+  const graph = article === undefined ? [] : article.graph;
+
+  const words = vocabIndices.map(vocabIndex => vocab[vocabIndex][1]);
+
+  const weights = Array(vocab.length).fill(0);
+  if (weights.length > 0) {
+    const currentVocabIndex = vocabIndices.length === 0
+        ? 0 : vocabIndices[vocabIndices.length - 1];
+    const nextVocabIndices = graph[currentVocabIndex];
+    for (var i = 0; i < nextVocabIndices.length; i++) {
+      weights[nextVocabIndices[i][0]] = nextVocabIndices[i][1];
+    }
+  }
+
+  function handleRadioChange(e) {
+    setArticleLabel(e.target.value);
+    setVocabIndices([]);
+  }
+
+  function handleSampleClick() {
+    if (articleLabel === '' || words[words.length - 1] === 'EOS') {
+      return;
+    }
+    const vocabIndex = getRandomIntWeighted(weights);
+    setVocabIndices(prevVocabIndices => prevVocabIndices.concat(vocabIndex));
+  }
+
   return (
     <section className="generator">
-      <RadioForm onChange={props.onChange} />
-      <div className="buttons">
-        <button className={sampleClassName} onClick={props.onClickSample}>
-          サンプル
-        </button>
-        <button className={resetClassName} onClick={props.onClickReset}>
-          リセット
-        </button>
-      </div>
-      <WordList words={props.words} />
-      <div className="chart">
-        <Bar data={props.data} height={200} />
-      </div>
+      <RadioForm articles={articles} onChange={handleRadioChange} />
+      <Buttons
+        articleLabel={articleLabel}
+        words={words}
+        weights={weights}
+        onSampleClick={handleSampleClick}
+        onResetClick={() => setVocabIndices([])}
+      />
+      <WordList words={words} />
+      <Chart vocab={vocab} weights={weights} />
+    </section>
+  );
+}
+
+function Description() {
+  return (
+    <section className="description">
+      <h3>サカモトの記事をジェネレート！</h3>
+      <p>あのサカモトツイートジェネレータがついにオンラインで登場します。</p>
+      <p>せっかくのジェネレータを手軽に試してみたい、という声が寄せられたり寄せられなかったりしました。そこで今回はツイートに代わって記事を学習。例によってサカモトっぽい文を生成してくれます。</p>
+      <p>これであなたもサカモトに・・・。</p>
+    </section>
+  );
+}
+
+function Usage() {
+  return (
+    <section className="usage">
+      <h3>サカモトになる</h3>
+      <p>「学習記事選択」で学習したい記事を選択します。記事については半角を全角に正規化し、形態素解析を行っています。</p>
+      <p>「サンプル」で次に来る単語をサンプリングします。単語はtrigram言語モデルの分布からサンプリングされます。なお単語の分布（Top-5）は棒グラフによって与えられます。「リセット」で再び初めからサンプリングすることができます。</p>
     </section>
   );
 }
 
 function LinkItem(props) {
-  const link = props.link;
+  const article = props.article;
   return (
     <li className="link-item">
-      <a className="link-link" href={link.url}>
-        {link.title}
+      <a href={article.url}>
+        {article.title}
       </a>
     </li>
   );
 }
 
 function LinkList(props) {
-  const links = props.links;
-  const linkItems = links.map((link, index) =>
-    <LinkItem key={index} link={link} />
+  const articles = props.articles;
+  const linkItems = articles.map((article, index) =>
+    <LinkItem key={index} article={article} />
   );
   return (
     <ul className="link-list">
@@ -247,129 +273,86 @@ function LinkList(props) {
 }
 
 function Links(props) {
-  const links = [
-    {
-      url: 'https://idea-misw.hatenablog.com/entry/2020/12/16/000000',
-      title: '【再掲】サカモトツイートジェネレータ - 洞窟の比喩',
-    },
-    {
-      url: 'https://idea-misw.hatenablog.com/entry/2021/12/07/000000',
-      title: '【付録】STGO - 洞窟の比喩',
-    },
-    {
-      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Hke7xT6Tr',
-      title: '【提案】自分の側に『推し』がいたら人類は最強になるんじゃないの？ - HackMD'
-    },
-    {
-      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/ryqcvcfjD',
-      title: 'もちもちハム祭り2020 インターネットスペシャル - HackMD'
-    },
-    {
-      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/S1w1XBy0S',
-      title: 'サカカレ、概念 - HackMD'
-    },
-    {
-      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Syq2j9ClO',
-      title: 'ミニミニ大国(仮) - HackMD'
-    }
-  ];
+  const articles = props.articles
   return (
     <section className="links">
-      <h3>関連リンク</h3>
-      <LinkList links={links} />
+      <h3>記事のリンク</h3>
+      <LinkList articles={articles} />
     </section>
   );
 }
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      article: '',
-      vocab: [],
-      graph: [],
-      vocabIndex: 0,
-      weights: [],
-      words: [],
-      data: getData([], [])
-    };
-  }
+function Header() {
+  return (
+    <header>
+      <div className="container">
+        <h1 className="title">サカモトツイートジェネレータ・オンライン</h1>
+      </div>
+    </header>
+  );
+}
 
-  handleChange(event) {
-    var article = event.target.value;
-    var vocab = vocabs[article];
-    var graph = graphs[article];
-    var weights = getWeights(0, vocab, graph)
-    this.setState({
-      article: article,
-      vocab: vocab,
-      graph: graph,
-      vocabIndex: 0,
-      weights: weights,
-      words: [],
-      data: getData(vocab, weights)
-    });
-  }
-
-  handleSample() {
-    if (this.state.article === '') {
-      return;
+function Main() {
+  const articles = [
+    {
+      label: 'アドカレ2019',
+      title: '【提案】自分の側に『推し』がいたら人類は最強になるんじゃないの？ - HackMD',
+      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Hke7xT6Tr',
+      vocab: vocabForAdv19,
+      graph: graphForAdv19
+    },
+    {
+      label: 'アドカレ2020',
+      title: 'もちもちハム祭り2020 インターネットスペシャル - HackMD',
+      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/ryqcvcfjD',
+      vocab: vocabForAdv20,
+      graph: graphForAdv20
+    },
+    {
+      label: 'サカカレ概念',
+      title: 'サカカレ、概念 - HackMD',
+      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/S1w1XBy0S',
+      vocab: vocabForSkCal,
+      graph: graphForSkCal
+    },
+    {
+      label: 'ミニミニ大国',
+      title: 'ミニミニ大国(仮) - HackMD',
+      url: 'https://hackmd.io/@kA0OlUhGRNmJkK7Nnx4QaQ/Syq2j9ClO',
+      vocab: vocabForMini,
+      graph: graphForMini
     }
-    if (this.state.words[this.state.words.length - 1] === 'EOS') {
-      return;
-    }
-    var bigram = this.state.vocab[getRandomIntWeighted(this.state.weights)];
+  ];
+  return (
+    <main>
+      <div className="container">
+        <Description />
+        <Usage />
+        <Generator articles={articles}/>
+        <Links articles={articles}/>
+      </div>
+    </main>
+  );
+}
 
-    var word = bigram[1];
-    var vocabIndex = this.state.vocab.indexOf(bigram);
-    var weights = getWeights(vocabIndex, this.state.vocab, this.state.graph);
+function Footer() {
+  return (
+    <footer>
+      <div className="container">
+        <p className="copyright">© 2021 ΙΔΈΑ</p>
+      </div>
+    </footer>
+  );
+}
 
-    this.setState({
-      article: this.state.article,
-      vocab: this.state.vocab,
-      graph: this.state.graph,
-      vocabIndex: vocabIndex,
-      weights: weights,
-      words: this.state.words.concat(word),
-      data: getData(this.state.vocab, weights)
-    });
-  }
-
-  handleReset() {
-    if (this.state.article === '') {
-      return;
-    }
-    var weights = getWeights(0, this.state.vocab, this.state.graph)
-    this.setState({
-      article: this.state.article,
-      vocab: this.state.vocab,
-      graph: this.state.graph,
-      vocabIndex: 0,
-      weights: weights,
-      words: [],
-      data: getData(this.state.vocab, weights)
-    });
-  }
-
-  render() {
-    return (
-      <main>
-        <div className="container">
-          <Description />
-          <Usage />
-          <Generator
-            article={this.state.article}
-            words={this.state.words}
-            data={this.state.data}
-            onChange={(event) => this.handleChange(event)}
-            onClickSample={() => this.handleSample()}
-            onClickReset={() => this.handleReset()}
-          />
-          <Links />
-        </div>
-      </main>
-    );
-  }
+function App() {
+  return (
+    <div className="App">
+      <Header />
+      <Main />
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
