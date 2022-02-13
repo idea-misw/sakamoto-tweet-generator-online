@@ -1,22 +1,17 @@
 {
   "files": {
-    "main.css": "/sakamoto-tweet-generator-online/static/css/main.d52a9775.chunk.css",
-    "main.js": "/sakamoto-tweet-generator-online/static/js/main.48f80b90.chunk.js",
-    "main.js.map": "/sakamoto-tweet-generator-online/static/js/main.48f80b90.chunk.js.map",
-    "runtime-main.js": "/sakamoto-tweet-generator-online/static/js/runtime-main.d5181aae.js",
-    "runtime-main.js.map": "/sakamoto-tweet-generator-online/static/js/runtime-main.d5181aae.js.map",
-    "static/js/2.c983fe8d.chunk.js": "/sakamoto-tweet-generator-online/static/js/2.c983fe8d.chunk.js",
-    "static/js/2.c983fe8d.chunk.js.map": "/sakamoto-tweet-generator-online/static/js/2.c983fe8d.chunk.js.map",
-    "static/js/3.05f54724.chunk.js": "/sakamoto-tweet-generator-online/static/js/3.05f54724.chunk.js",
-    "static/js/3.05f54724.chunk.js.map": "/sakamoto-tweet-generator-online/static/js/3.05f54724.chunk.js.map",
+    "main.css": "/sakamoto-tweet-generator-online/static/css/main.2fd583e4.chunk.css",
+    "main.js": "/sakamoto-tweet-generator-online/static/js/main.70ddbf3e.chunk.js",
+    "main.js.map": "/sakamoto-tweet-generator-online/static/js/main.70ddbf3e.chunk.js.map",
+    "runtime~main.js": "/sakamoto-tweet-generator-online/static/js/runtime~main.05221029.js",
+    "runtime~main.js.map": "/sakamoto-tweet-generator-online/static/js/runtime~main.05221029.js.map",
+    "static/js/2.bb022b47.chunk.js": "/sakamoto-tweet-generator-online/static/js/2.bb022b47.chunk.js",
+    "static/js/2.bb022b47.chunk.js.map": "/sakamoto-tweet-generator-online/static/js/2.bb022b47.chunk.js.map",
+    "static/js/3.a3f1d22b.chunk.js": "/sakamoto-tweet-generator-online/static/js/3.a3f1d22b.chunk.js",
+    "static/js/3.a3f1d22b.chunk.js.map": "/sakamoto-tweet-generator-online/static/js/3.a3f1d22b.chunk.js.map",
     "index.html": "/sakamoto-tweet-generator-online/index.html",
-    "static/css/main.d52a9775.chunk.css.map": "/sakamoto-tweet-generator-online/static/css/main.d52a9775.chunk.css.map",
-    "static/js/2.c983fe8d.chunk.js.LICENSE.txt": "/sakamoto-tweet-generator-online/static/js/2.c983fe8d.chunk.js.LICENSE.txt"
-  },
-  "entrypoints": [
-    "static/js/runtime-main.d5181aae.js",
-    "static/js/2.c983fe8d.chunk.js",
-    "static/css/main.d52a9775.chunk.css",
-    "static/js/main.48f80b90.chunk.js"
-  ]
+    "precache-manifest.288c669e0d4aca10513bc79496808414.js": "/sakamoto-tweet-generator-online/precache-manifest.288c669e0d4aca10513bc79496808414.js",
+    "service-worker.js": "/sakamoto-tweet-generator-online/service-worker.js",
+    "static/css/main.2fd583e4.chunk.css.map": "/sakamoto-tweet-generator-online/static/css/main.2fd583e4.chunk.css.map"
+  }
 }
